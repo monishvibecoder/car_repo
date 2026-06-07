@@ -208,6 +208,7 @@ def ai_chat():
     keywords_rover = ['rover', 'range rover', 'sv', 'black', 'suv', 'land rover']
     keywords_lc = ['lc300', 'land cruiser 300', 'land cruiser', 'lc 300', 'toyota', 'cruiser']
     keywords_gclass = ['g-class', 'g class', 'g63', 'g-wagon', 'wagon', 'gwagon', 'mercedes', 'benz']
+    keywords_bentley = ['bentley', 'supersports', 'continental', 'gt', 'w12']
     
     matched_car = None
     if any(k in message for k in keywords_porsche):
@@ -220,6 +221,8 @@ def ai_chat():
         matched_car = "Land Cruiser 300"
     elif any(k in message for k in keywords_gclass):
         matched_car = "Mercedes G-Class"
+    elif any(k in message for k in keywords_bentley):
+        matched_car = "Bentley Supersports"
         
     if matched_car:
         tool = f"database_query(name='{matched_car}')"
@@ -303,6 +306,12 @@ def init_db():
                     description="The icon of luxury off-roading. Powered by a hand-crafted 4.0L twin-turbo V8 AMG engine producing 577 HP, with timeless boxy styling.",
                     price=180000.00,
                     image_url="/static/g_class.png"
+                ),
+                Product(
+                    name="Bentley Supersports",
+                    description="The extreme expression of Bentley luxury and performance. Features a twin-turbo W12 engine producing 700 HP, bespoke carbon fiber styling, and supreme grand touring speed.",
+                    price=290000.00,
+                    image_url="/static/bentley.png"
                 )
             ]
             db.session.bulk_save_objects(sample_products)
@@ -378,6 +387,20 @@ def init_db():
             db.session.add(gclass_car)
             db.session.commit()
             print("Mercedes G-Class seeded successfully!")
+
+        # Ensure 'Bentley Supersports' exists in the database for existing setups
+        bentley_exists = Product.query.filter_by(name="Bentley Supersports").first()
+        if not bentley_exists:
+            print("Seeding Bentley Supersports for existing database...")
+            bentley_car = Product(
+                name="Bentley Supersports",
+                description="The extreme expression of Bentley luxury and performance. Features a twin-turbo W12 engine producing 700 HP, bespoke carbon fiber styling, and supreme grand touring speed.",
+                price=290000.00,
+                image_url="/static/bentley.png"
+            )
+            db.session.add(bentley_car)
+            db.session.commit()
+            print("Bentley Supersports seeded successfully!")
 
         # Ensure the 'driver' user account exists
         driver_user = User.query.filter_by(username="driver").first()
