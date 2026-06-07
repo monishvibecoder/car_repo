@@ -208,6 +208,7 @@ def ai_chat():
     keywords_cruiser = ['cruiser', 'grand cruiser', 'gt', 'v8', 'sedan']
     keywords_porsche = ['porsche', '911', 'gt3', 'flat-six']
     keywords_bmw = ['bmw', 'm5', 'competition', 'beemer', 'xdrive']
+    keywords_rover = ['rover', 'range rover', 'sv', 'black', 'suv', 'land rover']
     
     matched_car = None
     if any(k in message for k in keywords_roadster):
@@ -220,6 +221,8 @@ def ai_chat():
         matched_car = "Porsche 911 GT3"
     elif any(k in message for k in keywords_bmw):
         matched_car = "BMW M5 Competition"
+    elif any(k in message for k in keywords_rover):
+        matched_car = "Range Rover SV Black"
         
     if matched_car:
         tool = f"database_query(name='{matched_car}')"
@@ -294,7 +297,13 @@ def init_db():
                     name="BMW M5 Competition",
                     description="The ultimate executive performance sedan. Powered by a 4.4L twin-turbo V8 producing 617 HP, paired with an M xDrive AWD system.",
                     price=115000.00,
-                    image_url="https://images.unsplash.com/photo-1617814076367-b759c7d7e738?w=800&q=80"
+                    image_url="/static/bmw_m5.png"
+                ),
+                Product(
+                    name="Range Rover SV Black",
+                    description="The pinnacle of luxury SUVs. Featuring a stealthy black finish, SV custom leather interior, and a powerful supercharged V8 engine.",
+                    price=230000.00,
+                    image_url="/static/range_rover.png"
                 )
             ]
             db.session.bulk_save_objects(sample_products)
@@ -323,11 +332,25 @@ def init_db():
                 name="BMW M5 Competition",
                 description="The ultimate executive performance sedan. Powered by a 4.4L twin-turbo V8 producing 617 HP, paired with an M xDrive AWD system.",
                 price=115000.00,
-                image_url="https://images.unsplash.com/photo-1617814076367-b759c7d7e738?w=800&q=80"
+                image_url="/static/bmw_m5.png"
             )
             db.session.add(bmw_car)
             db.session.commit()
             print("BMW M5 Competition seeded successfully!")
+
+        # Ensure 'Range Rover SV Black' exists in the database for existing setups
+        rover_exists = Product.query.filter_by(name="Range Rover SV Black").first()
+        if not rover_exists:
+            print("Seeding Range Rover SV Black for existing database...")
+            rover_car = Product(
+                name="Range Rover SV Black",
+                description="The pinnacle of luxury SUVs. Featuring a stealthy black finish, SV custom leather interior, and a powerful supercharged V8 engine.",
+                price=230000.00,
+                image_url="/static/range_rover.png"
+            )
+            db.session.add(rover_car)
+            db.session.commit()
+            print("Range Rover SV Black seeded successfully!")
 
         # Ensure the 'driver' user account exists
         driver_user = User.query.filter_by(username="driver").first()
