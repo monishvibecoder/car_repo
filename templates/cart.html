@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Cart - Big Boy Toyz</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Montserrat & Outfit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #050505;
+        }
+        h1, h2, h3, .logo-font {
+            font-family: 'Outfit', sans-serif;
+        }
+    </style>
+</head>
+<body class="text-slate-100 flex flex-col min-h-screen">
+    <!-- BBT Header -->
+    <header class="sticky top-0 z-50 backdrop-blur-md bg-black/90 border-b border-neutral-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <!-- Brand Logo matching Big Boy Toyz -->
+            <a href="/" class="flex flex-col items-start leading-none">
+                <span class="text-2xl sm:text-3xl font-black tracking-widest bg-gradient-to-r from-amber-300 via-yellow-400 to-amber-500 bg-clip-text text-transparent logo-font">
+                    BIG BOY TOYZ
+                </span>
+                <span class="text-[0.6rem] tracking-[0.35em] text-neutral-400 font-medium mt-0.5">
+                    PRE-OWNED LUXURY CARS
+                </span>
+            </a>
+            
+            <!-- Navigation -->
+            <nav class="flex items-center space-x-6 sm:space-x-8">
+                <a href="/" class="text-sm font-semibold uppercase tracking-wider text-neutral-300 hover:text-amber-400 transition-colors">Shop</a>
+                
+                <a href="/cart" class="relative group flex items-center p-2 rounded-full hover:bg-neutral-900 transition-all">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-neutral-300 group-hover:text-amber-400 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                    </svg>
+                    {% set cart_count = session.get('cart', {}) | length %}
+                    {% if cart_count > 0 %}
+                    <span class="absolute -top-1 -right-1 bg-amber-500 text-neutral-950 text-xs font-black w-5 h-5 rounded-full flex items-center justify-center border-2 border-black shadow-sm">
+                        {{ cart_count }}
+                    </span>
+                    {% endif %}
+                </a>
+
+                {% if session.get('username') %}
+                <div class="flex items-center space-x-3">
+                    <span class="text-sm font-medium text-slate-300">
+                        Hi, <span class="font-bold text-amber-400">{{ session.get('username') }}</span>!
+                    </span>
+                    <a href="/logout" class="inline-flex items-center justify-center px-4 py-2 border border-neutral-800 text-xs font-bold uppercase tracking-wider rounded-xl text-neutral-300 bg-neutral-900 hover:bg-neutral-800 hover:text-red-500 transition-all">
+                        Logout
+                    </a>
+                </div>
+                {% else %}
+                <a href="/login" class="inline-flex items-center justify-center px-5 py-2.5 rounded-xl text-xs font-bold uppercase tracking-widest text-neutral-950 bg-gradient-to-r from-amber-300 via-yellow-400 to-amber-500 hover:from-amber-400 hover:to-amber-600 transition-all">
+                    Login
+                </a>
+                {% endif %}
+            </nav>
+        </div>
+    </header>
+
+    <!-- Flash Messages (for checkout/auth warning notifications) -->
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6 w-full">
+            {% for message in messages %}
+            <div class="flex items-center justify-between p-4 mb-4 text-amber-950 bg-amber-400 border border-amber-300 rounded-xl shadow-lg" role="alert">
+                <div class="flex items-center space-x-2">
+                    <svg class="w-5 h-5 text-amber-950" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
+                    </svg>
+                    <span class="font-bold text-sm tracking-wide uppercase">{{ message }}</span>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+    {% endwith %}
+
+    <!-- Main Content -->
+    <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 w-full">
+        <div class="max-w-4xl mx-auto">
+            <h1 class="text-3xl font-extrabold uppercase tracking-wider text-slate-100 mb-8">Shopping Garage</h1>
+
+            {% if cart_items %}
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Cart Items List -->
+                <div class="lg:col-span-2 space-y-4">
+                    {% for item in cart_items %}
+                    <div class="bg-neutral-900 border border-neutral-800 p-5 flex items-center space-x-5 shadow-lg rounded-2xl">
+                        <!-- Product Image -->
+                        <img src="{{ item.product.image_url }}" alt="{{ item.product.name }}" class="w-24 h-24 object-cover rounded-xl bg-neutral-950">
+                        
+                        <!-- Details -->
+                        <div class="flex-grow min-w-0">
+                            <h3 class="font-bold text-lg text-slate-100 truncate uppercase tracking-wide">{{ item.product.name }}</h3>
+                            <p class="text-sm text-amber-400 font-semibold mt-0.5">${{ "{:,.2f}".format(item.product.price) }} each</p>
+                            
+                            <!-- Quantity Controls -->
+                            <div class="flex items-center space-x-3 mt-4">
+                                <span class="text-xs text-neutral-500 uppercase tracking-wider">Qty:</span>
+                                <div class="flex items-center border border-neutral-800 rounded-lg overflow-hidden bg-neutral-950">
+                                    <!-- Decrement -->
+                                    <a href="/remove_from_cart/{{ item.product.id }}" class="px-3 py-1.5 text-neutral-400 hover:bg-neutral-900 hover:text-white transition-colors font-bold text-sm select-none">
+                                        &minus;
+                                    </a>
+                                    <!-- Value -->
+                                    <span class="px-4 py-1.5 text-xs font-bold text-amber-400 bg-neutral-900 border-x border-neutral-800">
+                                        {{ item.quantity }}
+                                    </span>
+                                    <!-- Increment -->
+                                    <a href="/add_to_cart/{{ item.product.id }}" class="px-3 py-1.5 text-neutral-400 hover:bg-neutral-900 hover:text-white transition-colors font-bold text-sm select-none">
+                                        &plus;
+                                    </a>
+                                </div>
+                                
+                                <!-- Delete Item -->
+                                <a href="/delete_from_cart/{{ item.product.id }}" class="text-xs font-semibold uppercase tracking-wider text-red-500 hover:text-red-400 transition-colors flex items-center space-x-1.5 ml-6" title="Remove item">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                    </svg>
+                                    <span>Remove</span>
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Item Total -->
+                        <div class="text-right">
+                            <span class="font-black text-xl text-slate-100 logo-font block">${{ "{:,.2f}".format(item.total) }}</span>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <!-- Summary Panel -->
+                <div class="bg-neutral-900 border border-neutral-800 p-6 shadow-xl h-fit space-y-6 rounded-2xl">
+                    <h2 class="text-lg font-bold text-slate-100 uppercase tracking-widest pb-3 border-b border-neutral-800">Order Summary</h2>
+                    
+                    <div class="space-y-3 text-xs uppercase tracking-wider text-neutral-400">
+                        <div class="flex justify-between">
+                            <span>Subtotal</span>
+                            <span class="font-bold text-slate-100">${{ "{:,.2f}".format(total_price) }}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Delivery</span>
+                            <span class="text-emerald-500 font-bold">Complimentary</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Tax</span>
+                            <span class="font-bold text-slate-100">$0.00</span>
+                        </div>
+                    </div>
+
+                    <div class="pt-4 border-t border-neutral-800 flex justify-between items-baseline">
+                        <span class="text-xs font-bold uppercase tracking-wider text-neutral-400">Total Price</span>
+                        <span class="text-2xl font-black text-amber-400 logo-font">${{ "{:,.2f}".format(total_price) }}</span>
+                    </div>
+
+                    <!-- Checkout Button -->
+                    <a href="/checkout" class="w-full inline-flex items-center justify-center px-6 py-4 border border-transparent text-xs font-bold uppercase tracking-widest rounded-xl text-neutral-950 bg-gradient-to-r from-amber-300 via-yellow-400 to-amber-500 hover:from-amber-400 hover:to-amber-600 shadow-md hover:shadow-lg transition-all duration-200 transform">
+                        Complete Checkout
+                    </a>
+
+                    <div class="text-center pt-2">
+                        <a href="/" class="text-xs font-bold uppercase tracking-widest text-amber-400 hover:text-amber-500 transition-colors">
+                            &larr; Return to Fleet
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% else %}
+            <!-- Empty Cart State -->
+            <div class="text-center py-20 bg-neutral-900 border border-neutral-800 shadow-xl rounded-2xl">
+                <div class="w-16 h-16 bg-neutral-950 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-neutral-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                    </svg>
+                </div>
+                <h3 class="text-lg font-bold uppercase tracking-wider text-slate-100 mb-1">Your garage is empty</h3>
+                <p class="text-sm text-neutral-500 mb-8">Looks like you haven't added any luxury vehicles to your cart yet.</p>
+                <a href="/" class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-xs font-bold uppercase tracking-widest rounded-xl text-neutral-950 bg-gradient-to-r from-amber-300 to-amber-500 hover:from-amber-400 hover:to-amber-600 shadow-md transition-all">
+                    Browse Fleet
+                </a>
+            </div>
+            {% endif %}
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-black border-t border-neutral-900 mt-20 py-10">
+        <div class="max-w-7xl mx-auto px-4 text-center space-y-4">
+            <span class="text-lg font-black tracking-widest bg-gradient-to-r from-amber-300 to-amber-500 bg-clip-text text-transparent logo-font">
+                BIG BOY TOYZ
+            </span>
+            <p class="text-xs text-neutral-500 tracking-wider">
+                &copy; 2026 Big Boy Toyz E-Commerce Prototype. Created for learning Python & Flask.
+            </p>
+        </div>
+    </footer>
+</body>
+</html>

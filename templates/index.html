@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Big Boy Toyz - Buy Pre-Owned Luxury Cars</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Montserrat & Outfit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #050505;
+        }
+        h1, h2, h3, .logo-font {
+            font-family: 'Outfit', sans-serif;
+        }
+    </style>
+</head>
+<body class="text-slate-100 flex flex-col min-h-screen">
+    <!-- BBT Header -->
+    <header class="sticky top-0 z-50 backdrop-blur-md bg-black/90 border-b border-neutral-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <!-- Brand Logo matching Big Boy Toyz -->
+            <a href="/" class="flex flex-col items-start leading-none">
+                <span class="text-2xl sm:text-3xl font-black tracking-widest bg-gradient-to-r from-amber-300 via-yellow-400 to-amber-500 bg-clip-text text-transparent logo-font">
+                    BIG BOY TOYZ
+                </span>
+                <span class="text-[0.6rem] tracking-[0.35em] text-neutral-400 font-medium mt-0.5">
+                    PRE-OWNED LUXURY CARS
+                </span>
+            </a>
+            
+            <!-- Navigation -->
+            <nav class="flex items-center space-x-6 sm:space-x-8">
+                <a href="/" class="text-sm font-semibold uppercase tracking-wider text-neutral-300 hover:text-amber-400 transition-colors">Fleet</a>
+                
+                <!-- Cart Icon -->
+                <a href="/cart" class="relative group flex items-center p-2 rounded-full hover:bg-neutral-900 transition-all">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-neutral-300 group-hover:text-amber-400 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                    </svg>
+                    {% set cart_count = session.get('cart', {}) | length %}
+                    {% if cart_count > 0 %}
+                    <span class="absolute -top-1 -right-1 bg-amber-500 text-neutral-950 text-xs font-black w-5 h-5 rounded-full flex items-center justify-center border-2 border-black shadow-sm">
+                        {{ cart_count }}
+                    </span>
+                    {% endif %}
+                </a>
+
+                <!-- User Session Actions -->
+                {% if session.get('username') %}
+                <div class="flex items-center space-x-4">
+                    <span class="text-xs font-semibold uppercase tracking-wider text-neutral-400 hidden sm:inline-block">
+                        Driver: <span class="text-amber-400 font-bold">{{ session.get('username') }}</span>
+                    </span>
+                    <a href="/logout" class="inline-flex items-center justify-center px-4 py-2 border border-neutral-800 text-xs font-bold uppercase tracking-wider rounded-xl text-neutral-300 bg-neutral-900 hover:bg-neutral-800 hover:text-red-500 transition-all">
+                        Logout
+                    </a>
+                </div>
+                {% else %}
+                <a href="/login" class="inline-flex items-center justify-center px-5 py-2.5 rounded-xl text-xs font-bold uppercase tracking-widest text-neutral-950 bg-gradient-to-r from-amber-300 via-yellow-400 to-amber-500 hover:from-amber-400 hover:to-amber-600 transition-all shadow-md">
+                    Login
+                </a>
+                {% endif %}
+            </nav>
+        </div>
+    </header>
+
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6 w-full">
+            {% for message in messages %}
+            <div class="flex items-center justify-between p-4 mb-4 text-amber-950 bg-amber-400/90 border border-amber-300 rounded-xl shadow-lg" role="alert">
+                <div class="flex items-center space-x-2">
+                    <svg class="w-5 h-5 text-amber-950 animate-bounce" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                    </svg>
+                    <span class="font-bold text-sm tracking-wide uppercase">{{ message }}</span>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+    {% endwith %}
+
+    <!-- Main Content -->
+    <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 w-full">
+        
+        <!-- Big Boy Toyz Slogan Hero Banner -->
+        <div class="relative overflow-hidden rounded-3xl bg-neutral-900 border border-neutral-800 text-white p-8 md:p-14 mb-12 shadow-2xl">
+            <!-- Styling Background -->
+            <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-amber-500/10 via-transparent to-transparent"></div>
+            <div class="absolute -top-24 -right-24 w-96 h-96 bg-amber-500 rounded-full blur-3xl opacity-10"></div>
+            
+            <div class="relative z-10 max-w-2xl">
+                <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-amber-500/15 text-amber-400 mb-4 border border-amber-500/20 uppercase tracking-widest">
+                    THE DREAM DESTINATION FOR SUPERCAR LOVERS
+                </span>
+                <h1 class="text-4xl md:text-6xl font-black uppercase tracking-tight mb-4 leading-none">
+                    Supercars <span class="font-light block text-neutral-400">for Superstars</span>
+                </h1>
+                <p class="text-neutral-400 text-base md:text-lg mb-8 leading-relaxed max-w-lg">
+                    India's leading pre-owned luxury car dealership. Drive home your certified luxury Mercedes, Lamborghini, or Veloce with absolute confidence.
+                </p>
+                <a href="#fleet" class="inline-flex items-center px-8 py-4 border border-transparent text-sm font-bold uppercase tracking-wider rounded-xl text-neutral-950 bg-gradient-to-r from-amber-300 via-yellow-400 to-amber-500 hover:from-amber-400 hover:to-amber-600 shadow-xl transition-all duration-200 transform hover:-translate-y-0.5">
+                    Explore Fleet
+                </a>
+            </div>
+        </div>
+
+        <!-- Fleet Grid Section -->
+        <div id="fleet" class="space-y-8">
+            <div class="flex items-center justify-between border-b border-neutral-800 pb-5">
+                <div>
+                    <h2 class="text-2xl sm:text-3xl font-extrabold uppercase tracking-wider text-slate-100">Recently Parked</h2>
+                    <p class="text-sm text-neutral-500 mt-1">Exceptional engineering, certified luxury quality, and raw speed.</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                {% for product in products %}
+                <div class="group bg-neutral-900 border border-neutral-800/80 rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl hover:border-amber-500/30 transition-all duration-300 flex flex-col h-full">
+                    <!-- Image Container -->
+                    <div class="w-full bg-neutral-950 overflow-hidden relative aspect-video">
+                        <img src="{{ product.image_url }}" alt="{{ product.name }}" class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500">
+                        <div class="absolute inset-0 bg-gradient-to-t from-neutral-950/80 via-transparent to-transparent opacity-60"></div>
+                        
+                        <!-- Premium Label Box -->
+                        <span class="absolute top-4 left-4 bg-black/80 border border-neutral-800 text-neutral-300 text-[0.65rem] font-bold tracking-widest px-2.5 py-1 rounded-md uppercase">
+                            REG. YEAR : 2024
+                        </span>
+                    </div>
+                    
+                    <!-- Content -->
+                    <div class="p-6 flex flex-col flex-grow">
+                        <h3 class="text-xl font-bold text-slate-100 mb-2 group-hover:text-amber-400 transition-colors uppercase tracking-wide">
+                            {{ product.name }}
+                        </h3>
+                        <p class="text-sm text-neutral-400 leading-relaxed flex-grow mb-6">
+                            {{ product.description }}
+                        </p>
+                        
+                        <!-- Details Row -->
+                        <div class="grid grid-cols-3 gap-2 py-3 border-y border-neutral-800/60 mb-6 text-center text-[0.7rem] uppercase tracking-wider text-neutral-400">
+                            <div>
+                                <span class="block text-[0.6rem] text-neutral-500 mb-0.5">Driven</span>
+                                <span class="font-bold text-neutral-200">1,200 KM</span>
+                            </div>
+                            <div class="border-x border-neutral-800/60">
+                                <span class="block text-[0.6rem] text-neutral-500 mb-0.5">Fuel</span>
+                                <span class="font-bold text-neutral-200">Petrol / EV</span>
+                            </div>
+                            <div>
+                                <span class="block text-[0.6rem] text-neutral-500 mb-0.5">State</span>
+                                <span class="font-bold text-neutral-200">MH / DL</span>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-auto flex items-center justify-between">
+                            <span class="text-2xl font-black text-amber-400 logo-font">
+                                ${{ "{:,.2f}".format(product.price) }}
+                            </span>
+                            <a href="/add_to_cart/{{ product.id }}" class="inline-flex items-center justify-center px-5 py-3 border border-transparent text-xs font-bold uppercase tracking-widest rounded-xl text-neutral-950 bg-gradient-to-r from-amber-300 to-amber-500 hover:from-amber-400 hover:to-amber-600 active:scale-95 shadow-md hover:shadow-lg transition-all duration-200">
+                                Buy Now
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                {% else %}
+                <div class="col-span-full py-16 text-center">
+                    <p class="text-neutral-500 text-lg">No vehicles found. Please initialize the database.</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-black border-t border-neutral-900 mt-20 py-10">
+        <div class="max-w-7xl mx-auto px-4 text-center space-y-4">
+            <span class="text-lg font-black tracking-widest bg-gradient-to-r from-amber-300 to-amber-500 bg-clip-text text-transparent logo-font">
+                BIG BOY TOYZ
+            </span>
+            <p class="text-xs text-neutral-500 tracking-wider">
+                &copy; 2026 Big Boy Toyz E-Commerce Prototype. Created for learning Python & Flask.
+            </p>
+        </div>
+    </footer>
+    <!-- AI Agent Chat Widget -->
+    <div class="fixed bottom-6 right-6 z-50">
+        <!-- Floating Toggle Button -->
+        <button id="chat-toggle" class="flex items-center justify-center w-14 h-14 rounded-full bg-gradient-to-r from-amber-300 via-yellow-400 to-amber-500 hover:from-amber-400 hover:to-amber-600 shadow-2xl transition-all duration-300 transform hover:scale-105 active:scale-95 text-neutral-950">
+            <svg id="chat-icon-open" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+            </svg>
+            <svg id="chat-icon-close" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+        </button>
+
+        <!-- Chat Container -->
+        <div id="chat-container" class="hidden absolute bottom-20 right-0 w-[320px] sm:w-[380px] h-[480px] bg-neutral-900 border border-neutral-800 shadow-2xl rounded-2xl flex flex-col overflow-hidden transition-all duration-300">
+            <!-- Chat Header -->
+            <div class="bg-black p-4 border-b border-neutral-800 flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <div class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
+                    <div class="text-left">
+                        <h4 class="font-bold text-xs uppercase tracking-widest text-slate-100">BBT AI Agent</h4>
+                        <span class="text-[0.6rem] text-neutral-400 uppercase tracking-widest block">Availability Checker</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chat Messages Area -->
+            <div id="chat-messages" class="flex-grow p-4 overflow-y-auto space-y-4 text-xs">
+                <!-- Initial greeting -->
+                <div class="flex flex-col items-start space-y-1">
+                    <span class="text-[0.6rem] text-neutral-500 uppercase tracking-wider pl-2">AI Agent</span>
+                    <div class="bg-neutral-950 border border-neutral-800 text-neutral-200 px-3.5 py-2.5 rounded-2xl rounded-tl-none max-w-[85%] leading-relaxed shadow-sm text-left">
+                        Hello! I am the Big Boy Toyz AI Sales Assistant. Type a car name (like <code class="font-mono text-amber-400">Roadster</code>, <code class="font-mono text-amber-400">Supercar</code>, or <code class="font-mono text-amber-400">Cruiser</code>) to check its availability.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chat Input Form -->
+            <form id="chat-form" class="p-3 border-t border-neutral-800 bg-neutral-950 flex items-center space-x-2">
+                <input id="chat-input" type="text" placeholder="Check car availability..." required class="flex-grow bg-neutral-900 border border-neutral-800 px-4 py-2.5 rounded-xl text-xs text-white focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500 placeholder-neutral-500">
+                <button type="submit" class="flex items-center justify-center p-2.5 rounded-xl bg-gradient-to-r from-amber-300 to-amber-500 hover:from-amber-400 hover:to-amber-600 text-neutral-950 transform active:scale-95 transition-all">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                    </svg>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Script to manage Chat Widget and API communications -->
+    <script>
+        const chatToggle = document.getElementById('chat-toggle');
+        const chatContainer = document.getElementById('chat-container');
+        const chatIconOpen = document.getElementById('chat-icon-open');
+        const chatIconClose = document.getElementById('chat-icon-close');
+        const chatForm = document.getElementById('chat-form');
+        const chatInput = document.getElementById('chat-input');
+        const chatMessages = document.getElementById('chat-messages');
+
+        // Toggle chat drawer display
+        chatToggle.addEventListener('click', () => {
+            chatContainer.classList.toggle('hidden');
+            chatIconOpen.classList.toggle('hidden');
+            chatIconClose.classList.toggle('hidden');
+            
+            // Auto-focus input when opened
+            if (!chatContainer.classList.contains('hidden')) {
+                chatInput.focus();
+                // Scroll messages to bottom
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+        });
+
+        // Submit query to Flask backend
+        chatForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const messageText = chatInput.value.trim();
+            if (!messageText) return;
+
+            // Clear input box
+            chatInput.value = '';
+
+            // 1. Render User Message
+            const userMsgDiv = document.createElement('div');
+            userMsgDiv.className = 'flex flex-col items-end space-y-1';
+            userMsgDiv.innerHTML = `
+                <span class="text-[0.6rem] text-neutral-500 uppercase tracking-wider pr-2">You</span>
+                <div class="bg-neutral-800 text-neutral-100 px-3.5 py-2.5 rounded-2xl rounded-tr-none max-w-[85%] leading-relaxed shadow-sm text-left">
+                    ${escapeHTML(messageText)}
+                </div>
+            `;
+            chatMessages.appendChild(userMsgDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+
+            // 2. Render Typing indicator
+            const typingDiv = document.createElement('div');
+            typingDiv.className = 'flex flex-col items-start space-y-1';
+            typingDiv.innerHTML = `
+                <span class="text-[0.6rem] text-neutral-500 uppercase tracking-wider pl-2">AI Agent</span>
+                <div id="typing-bubble" class="bg-neutral-950 border border-neutral-800 text-neutral-400 px-3.5 py-2 rounded-xl italic">
+                    Thinking...
+                </div>
+            `;
+            chatMessages.appendChild(typingDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+
+            try {
+                // Post message to Flask backend chat API
+                const response = await fetch('/api/chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message: messageText })
+                });
+                
+                const data = await response.json();
+                
+                // Remove typing bubble
+                typingDiv.remove();
+
+                // 3. Render Agentic AI Step-by-Step Response Block
+                const agentBlock = document.createElement('div');
+                agentBlock.className = 'flex flex-col items-start space-y-2 w-full text-left';
+                
+                // Construct HTML with Thoughts, Tools, Observations, and Response
+                let agentContent = `<span class="text-[0.6rem] text-neutral-500 uppercase tracking-wider pl-2">AI Agent</span>`;
+                
+                // Render Thought
+                if (data.thought) {
+                    agentContent += `
+                        <div class="w-[90%] bg-amber-500/5 border border-dashed border-amber-500/20 p-3 rounded-xl text-amber-400/90 leading-normal">
+                            <span class="font-bold text-[0.65rem] uppercase tracking-wider text-amber-500 block mb-0.5">Thought:</span>
+                            ${escapeHTML(data.thought)}
+                        </div>
+                    `;
+                }
+
+                // Render Tool Call
+                if (data.tool && data.tool !== 'None') {
+                    agentContent += `
+                        <div class="w-[90%] bg-neutral-950 border border-neutral-800 px-3 py-2 rounded-xl text-neutral-400 font-mono text-[0.65rem] leading-normal flex items-center space-x-1.5">
+                            <span class="text-emerald-500 font-bold">Tool:</span>
+                            <span>${escapeHTML(data.tool)}</span>
+                        </div>
+                    `;
+                }
+
+                // Render Observation
+                if (data.observation) {
+                    agentContent += `
+                        <div class="w-[90%] bg-neutral-950 border border-neutral-800 px-3 py-2 rounded-xl text-neutral-400 font-mono text-[0.65rem] leading-normal flex items-center space-x-1.5">
+                            <span class="text-cyan-500 font-bold">Obs:</span>
+                            <span>${escapeHTML(data.observation)}</span>
+                        </div>
+                    `;
+                }
+
+                // Render Final Response
+                if (data.response) {
+                    agentContent += `
+                        <div class="bg-neutral-950 border border-neutral-800 text-neutral-200 px-3.5 py-2.5 rounded-2xl rounded-tl-none max-w-[85%] leading-relaxed shadow-sm mt-1">
+                            ${markdownToSimpleHTML(data.response)}
+                        </div>
+                    `;
+                }
+
+                agentBlock.innerHTML = agentContent;
+                chatMessages.appendChild(agentBlock);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+
+            } catch (err) {
+                console.error(err);
+                typingDiv.remove();
+                
+                const errorDiv = document.createElement('div');
+                errorDiv.className = 'flex flex-col items-start space-y-1';
+                errorDiv.innerHTML = `
+                    <span class="text-[0.6rem] text-neutral-500 uppercase tracking-wider pl-2">System Error</span>
+                    <div class="bg-rose-950/40 border border-rose-900 text-rose-400 px-3.5 py-2.5 rounded-xl">
+                        Sorry, I encountered an issue connecting to the availability service.
+                    </div>
+                `;
+                chatMessages.appendChild(errorDiv);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+        });
+
+        // Simple helper to escape HTML inputs
+        function escapeHTML(str) {
+            return str.replace(/[&<>'"]/g, 
+                tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
+            );
+        }
+
+        // Extremely simple parser for **bold** text in responses
+        function markdownToSimpleHTML(str) {
+            return escapeHTML(str).replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+        }
+    </script>
+</body>
+</html>
