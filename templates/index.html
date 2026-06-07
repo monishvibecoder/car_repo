@@ -165,7 +165,13 @@
                             </div>
                             <div>
                                 <span class="block text-[0.6rem] text-neutral-500 mb-0.5">State</span>
-                                <span class="font-bold text-neutral-200">MH / DL</span>
+                                <span class="font-bold text-neutral-200 font-bold">
+                                    {% if product.name == "Bentley Supersports" %}
+                                        KA
+                                    {% else %}
+                                        MH / DL
+                                    {% endif %}
+                                </span>
                             </div>
                         </div>
                         
