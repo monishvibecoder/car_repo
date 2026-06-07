@@ -207,6 +207,7 @@ def ai_chat():
     keywords_supercar = ['supercar', 'veloce', 'v12', 'lambo']
     keywords_cruiser = ['cruiser', 'grand cruiser', 'gt', 'v8', 'sedan']
     keywords_porsche = ['porsche', '911', 'gt3', 'flat-six']
+    keywords_bmw = ['bmw', 'm5', 'competition', 'beemer', 'xdrive']
     
     matched_car = None
     if any(k in message for k in keywords_roadster):
@@ -217,6 +218,8 @@ def ai_chat():
         matched_car = "Grand Cruiser GT"
     elif any(k in message for k in keywords_porsche):
         matched_car = "Porsche 911 GT3"
+    elif any(k in message for k in keywords_bmw):
+        matched_car = "BMW M5 Competition"
         
     if matched_car:
         tool = f"database_query(name='{matched_car}')"
@@ -286,6 +289,12 @@ def init_db():
                     description="A naturally aspirated track weapon designed for pure driver engagement. High-revving flat-six engine and signature rear wing.",
                     price=225000.00,
                     image_url="https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e?w=800&q=80"
+                ),
+                Product(
+                    name="BMW M5 Competition",
+                    description="The ultimate executive performance sedan. Powered by a 4.4L twin-turbo V8 producing 617 HP, paired with an M xDrive AWD system.",
+                    price=115000.00,
+                    image_url="https://images.unsplash.com/photo-1617814076367-b759c7d7e738?w=800&q=80"
                 )
             ]
             db.session.bulk_save_objects(sample_products)
@@ -305,6 +314,20 @@ def init_db():
             db.session.add(porsche_car)
             db.session.commit()
             print("Porsche 911 GT3 seeded successfully!")
+
+        # Ensure 'BMW M5 Competition' exists in the database for existing setups
+        bmw_exists = Product.query.filter_by(name="BMW M5 Competition").first()
+        if not bmw_exists:
+            print("Seeding BMW M5 Competition for existing database...")
+            bmw_car = Product(
+                name="BMW M5 Competition",
+                description="The ultimate executive performance sedan. Powered by a 4.4L twin-turbo V8 producing 617 HP, paired with an M xDrive AWD system.",
+                price=115000.00,
+                image_url="https://images.unsplash.com/photo-1617814076367-b759c7d7e738?w=800&q=80"
+            )
+            db.session.add(bmw_car)
+            db.session.commit()
+            print("BMW M5 Competition seeded successfully!")
 
         # Ensure the 'driver' user account exists
         driver_user = User.query.filter_by(username="driver").first()
