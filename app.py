@@ -265,28 +265,18 @@ def init_db():
             Product.query.delete()
             db.session.commit()
 
+        # Remove deleted cars if they exist in the database (Apex Roadster, Veloce Supercar, Grand Cruiser GT)
+        for name_to_remove in ["Apex Roadster", "Veloce Supercar", "Grand Cruiser GT"]:
+            product_to_remove = Product.query.filter_by(name=name_to_remove).first()
+            if product_to_remove:
+                print(f"Removing {name_to_remove} from the database...")
+                db.session.delete(product_to_remove)
+        db.session.commit()
+
         # Add sample data if the product table is empty
         if Product.query.count() == 0:
             print("Populating database with sample sports and luxury cars...")
             sample_products = [
-                Product(
-                    name="Apex Roadster",
-                    description="A sleek, high-performance electric convertible with lightning acceleration and a futuristic carbon fiber cabin.",
-                    price=185000.00,
-                    image_url="https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=800&q=80"
-                ),
-                Product(
-                    name="Veloce Supercar",
-                    description="Precision track handling meets raw carbon fiber engineering. Powered by a naturally aspirated 6.5L V12 engine.",
-                    price=320000.00,
-                    image_url="https://images.unsplash.com/photo-1544829099-b9a0c07fad1a?w=800&q=80"
-                ),
-                Product(
-                    name="Grand Cruiser GT",
-                    description="A twin-turbo V8 grand tourer offering supreme luxury, semi-autonomous driving, and effortless high-speed comfort.",
-                    price=145000.00,
-                    image_url="https://images.unsplash.com/photo-1563720223185-11003d516935?w=800&q=80"
-                ),
                 Product(
                     name="Porsche 911 GT3",
                     description="A naturally aspirated track weapon designed for pure driver engagement. High-revving flat-six engine and signature rear wing.",
