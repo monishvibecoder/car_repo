@@ -206,6 +206,7 @@ def ai_chat():
     keywords_roadster = ['roadster', 'apex', 'convertible', 'electric roadster']
     keywords_supercar = ['supercar', 'veloce', 'v12', 'lambo']
     keywords_cruiser = ['cruiser', 'grand cruiser', 'gt', 'v8', 'sedan']
+    keywords_porsche = ['porsche', '911', 'gt3', 'flat-six']
     
     matched_car = None
     if any(k in message for k in keywords_roadster):
@@ -214,6 +215,8 @@ def ai_chat():
         matched_car = "Veloce Supercar"
     elif any(k in message for k in keywords_cruiser):
         matched_car = "Grand Cruiser GT"
+    elif any(k in message for k in keywords_porsche):
+        matched_car = "Porsche 911 GT3"
         
     if matched_car:
         tool = f"database_query(name='{matched_car}')"
@@ -277,11 +280,31 @@ def init_db():
                     description="A twin-turbo V8 grand tourer offering supreme luxury, semi-autonomous driving, and effortless high-speed comfort.",
                     price=145000.00,
                     image_url="https://images.unsplash.com/photo-1563720223185-11003d516935?w=800&q=80"
+                ),
+                Product(
+                    name="Porsche 911 GT3",
+                    description="A naturally aspirated track weapon designed for pure driver engagement. High-revving flat-six engine and signature rear wing.",
+                    price=225000.00,
+                    image_url="https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e?w=800&q=80"
                 )
             ]
             db.session.bulk_save_objects(sample_products)
             db.session.commit()
             print("Database products populated successfully!")
+
+        # Ensure 'Porsche 911 GT3' exists in the database for existing setups
+        porsche_exists = Product.query.filter_by(name="Porsche 911 GT3").first()
+        if not porsche_exists:
+            print("Seeding Porsche 911 GT3 for existing database...")
+            porsche_car = Product(
+                name="Porsche 911 GT3",
+                description="A naturally aspirated track weapon designed for pure driver engagement. High-revving flat-six engine and signature rear wing.",
+                price=225000.00,
+                image_url="https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e?w=800&q=80"
+            )
+            db.session.add(porsche_car)
+            db.session.commit()
+            print("Porsche 911 GT3 seeded successfully!")
 
         # Ensure the 'driver' user account exists
         driver_user = User.query.filter_by(username="driver").first()
