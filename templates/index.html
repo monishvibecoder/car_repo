@@ -153,7 +153,15 @@
                             </div>
                             <div class="border-x border-neutral-800/60">
                                 <span class="block text-[0.6rem] text-neutral-500 mb-0.5">Fuel</span>
-                                <span class="font-bold text-neutral-200">Petrol / EV</span>
+                                <span class="font-bold text-neutral-200 font-bold">
+                                    {% if product.name in ["BMW M5 Competition", "Porsche 911 GT3", "Mercedes G-Class", "Bentley Supersports", "Range Rover SV Black"] %}
+                                        Petrol
+                                    {% elif product.name == "Land Cruiser 300" %}
+                                        Diesel
+                                    {% else %}
+                                        Petrol / EV
+                                    {% endif %}
+                                </span>
                             </div>
                             <div>
                                 <span class="block text-[0.6rem] text-neutral-500 mb-0.5">State</span>
