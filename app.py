@@ -1,3 +1,4 @@
+import os
 from flask import Flask, render_template, session, redirect, url_for, flash, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -6,8 +7,12 @@ from werkzeug.security import generate_password_hash, check_password_hash
 app = Flask(__name__)
 
 # Configure the SQLite database
-# The database file 'ecommerce.db' will be created inside the project folder
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///ecommerce.db'
+# On Vercel, the filesystem is read-only except for /tmp.
+if os.environ.get('VERCEL'):
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////tmp/ecommerce.db'
+else:
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///ecommerce.db'
+    
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 # Secret key is needed for session management (used in later steps for the cart)
 app.config['SECRET_KEY'] = 'beginner-ecommerce-secret-key'
@@ -288,8 +293,10 @@ def init_db():
             db.session.commit()
             print("Default seed user 'driver' created successfully!")
 
-# Run database setup and start the server when the file is run directly
+# Initialize database at the module level to ensure compatibility with Vercel serverless imports
+init_db()
+
+# Run the local development server when the file is run directly
 if __name__ == '__main__':
-    init_db()
     print("Starting Flask development server...")
     app.run(debug=True)
