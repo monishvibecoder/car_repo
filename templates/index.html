@@ -149,7 +149,23 @@
                         <div class="grid grid-cols-3 gap-2 py-3 border-y border-neutral-800/60 mb-6 text-center text-[0.7rem] uppercase tracking-wider text-neutral-400">
                             <div>
                                 <span class="block text-[0.6rem] text-neutral-500 mb-0.5">Driven</span>
-                                <span class="font-bold text-neutral-200">1,200 KM</span>
+                                <span class="font-bold text-neutral-200 font-bold">
+                                    {% if product.name == "Porsche 911 GT3" %}
+                                        4,500 KM
+                                    {% elif product.name == "BMW M5 Competition" %}
+                                        8,200 KM
+                                    {% elif product.name == "Range Rover SV Black" %}
+                                        3,100 KM
+                                    {% elif product.name == "Land Cruiser 300" %}
+                                        12,000 KM
+                                    {% elif product.name == "Mercedes G-Class" %}
+                                        6,800 KM
+                                    {% elif product.name == "Bentley Supersports" %}
+                                        2,500 KM
+                                    {% else %}
+                                        1,200 KM
+                                    {% endif %}
+                                </span>
                             </div>
                             <div class="border-x border-neutral-800/60">
                                 <span class="block text-[0.6rem] text-neutral-500 mb-0.5">Fuel</span>
