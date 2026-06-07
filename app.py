@@ -203,26 +203,23 @@ def ai_chat():
     thought = f"The user is asking: '{data.get('message')}'. I need to parse this query to find keywords related to our luxury fleet."
     
     # Simple keyword mappings
-    keywords_roadster = ['roadster', 'apex', 'convertible', 'electric roadster']
-    keywords_supercar = ['supercar', 'veloce', 'v12', 'lambo']
-    keywords_cruiser = ['cruiser', 'grand cruiser', 'gt', 'v8', 'sedan']
     keywords_porsche = ['porsche', '911', 'gt3', 'flat-six']
     keywords_bmw = ['bmw', 'm5', 'competition', 'beemer', 'xdrive']
     keywords_rover = ['rover', 'range rover', 'sv', 'black', 'suv', 'land rover']
+    keywords_lc = ['lc300', 'land cruiser 300', 'land cruiser', 'lc 300', 'toyota', 'cruiser']
+    keywords_gclass = ['g-class', 'g class', 'g63', 'g-wagon', 'wagon', 'gwagon', 'mercedes', 'benz']
     
     matched_car = None
-    if any(k in message for k in keywords_roadster):
-        matched_car = "Apex Roadster"
-    elif any(k in message for k in keywords_supercar):
-        matched_car = "Veloce Supercar"
-    elif any(k in message for k in keywords_cruiser):
-        matched_car = "Grand Cruiser GT"
-    elif any(k in message for k in keywords_porsche):
+    if any(k in message for k in keywords_porsche):
         matched_car = "Porsche 911 GT3"
     elif any(k in message for k in keywords_bmw):
         matched_car = "BMW M5 Competition"
     elif any(k in message for k in keywords_rover):
         matched_car = "Range Rover SV Black"
+    elif any(k in message for k in keywords_lc):
+        matched_car = "Land Cruiser 300"
+    elif any(k in message for k in keywords_gclass):
+        matched_car = "Mercedes G-Class"
         
     if matched_car:
         tool = f"database_query(name='{matched_car}')"
@@ -294,6 +291,18 @@ def init_db():
                     description="The pinnacle of luxury SUVs. Featuring a stealthy black finish, SV custom leather interior, and a powerful supercharged V8 engine.",
                     price=230000.00,
                     image_url="/static/range_rover.png"
+                ),
+                Product(
+                    name="Land Cruiser 300",
+                    description="The legendary master of all terrains. Combining luxury, bulletproof reliability, and advanced off-road capability. Powered by a twin-turbo V6 engine.",
+                    price=150000.00,
+                    image_url="/static/land_cruiser.png"
+                ),
+                Product(
+                    name="Mercedes G-Class",
+                    description="The icon of luxury off-roading. Powered by a hand-crafted 4.0L twin-turbo V8 AMG engine producing 577 HP, with timeless boxy styling.",
+                    price=180000.00,
+                    image_url="/static/g_class.png"
                 )
             ]
             db.session.bulk_save_objects(sample_products)
@@ -341,6 +350,34 @@ def init_db():
             db.session.add(rover_car)
             db.session.commit()
             print("Range Rover SV Black seeded successfully!")
+
+        # Ensure 'Land Cruiser 300' exists in the database for existing setups
+        lc_exists = Product.query.filter_by(name="Land Cruiser 300").first()
+        if not lc_exists:
+            print("Seeding Land Cruiser 300 for existing database...")
+            lc_car = Product(
+                name="Land Cruiser 300",
+                description="The legendary master of all terrains. Combining luxury, bulletproof reliability, and advanced off-road capability. Powered by a twin-turbo V6 engine.",
+                price=150000.00,
+                image_url="/static/land_cruiser.png"
+            )
+            db.session.add(lc_car)
+            db.session.commit()
+            print("Land Cruiser 300 seeded successfully!")
+
+        # Ensure 'Mercedes G-Class' exists in the database for existing setups
+        gclass_exists = Product.query.filter_by(name="Mercedes G-Class").first()
+        if not gclass_exists:
+            print("Seeding Mercedes G-Class for existing database...")
+            gclass_car = Product(
+                name="Mercedes G-Class",
+                description="The icon of luxury off-roading. Powered by a hand-crafted 4.0L twin-turbo V8 AMG engine producing 577 HP, with timeless boxy styling.",
+                price=180000.00,
+                image_url="/static/g_class.png"
+            )
+            db.session.add(gclass_car)
+            db.session.commit()
+            print("Mercedes G-Class seeded successfully!")
 
         # Ensure the 'driver' user account exists
         driver_user = User.query.filter_by(username="driver").first()
